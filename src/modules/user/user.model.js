@@ -1,4 +1,4 @@
-import mongoose, { Types } from 'mongoose';
+import mongoose, { Types } from "mongoose";
 
 const OtpSchema = mongoose.Schema({
   code: {
@@ -15,20 +15,20 @@ const UserSchema = mongoose.Schema(
   {
     fullName: {
       type: String,
-      default: '',
+      default: "",
     },
     bio: {
       type: String,
-      default: '',
+      default: "",
     },
     posts: {
       type: [Types.ObjectId],
-      ref:"posts",
+      ref: "posts",
       default: [],
     },
     profile: {
       type: String,
-      default: '',
+      default: "",
     },
     mobile: {
       type: String,
@@ -45,6 +45,6 @@ const UserSchema = mongoose.Schema(
   { timestamps: true },
 );
 
-const model = mongoose.model('user', UserSchema);
+const model = mongoose.model("user", UserSchema);
 
 export default model;

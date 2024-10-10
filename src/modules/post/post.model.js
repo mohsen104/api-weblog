@@ -1,4 +1,4 @@
-import mongoose, { Types } from 'mongoose';
+import mongoose, { Types } from "mongoose";
 
 const AnswerCommentSchema = mongoose.Schema(
   {
@@ -14,8 +14,8 @@ const AnswerCommentSchema = mongoose.Schema(
     for: {
       type: Types.ObjectId,
       ref: "users",
-      required: true
-    }
+      required: true,
+    },
   },
   { timestamps: true },
 );
@@ -38,7 +38,7 @@ const CommentSchema = mongoose.Schema(
     answers: {
       type: [AnswerCommentSchema],
       default: [],
-    }
+    },
   },
   { timestamps: true },
 );
@@ -65,7 +65,7 @@ const PostSchema = mongoose.Schema(
     },
     author: {
       type: Types.ObjectId,
-      ref: 'users',
+      ref: "users",
       required: true,
     },
     comments: {
@@ -76,6 +76,6 @@ const PostSchema = mongoose.Schema(
   { timestamps: true },
 );
 
-const model = mongoose.model('post', PostSchema);
+const model = mongoose.model("post", PostSchema);
 
 export default model;

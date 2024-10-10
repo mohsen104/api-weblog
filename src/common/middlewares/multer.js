@@ -1,4 +1,4 @@
-import multer from 'multer';
+import multer from "multer";
 
 const storage = multer.memoryStorage();
 
@@ -9,15 +9,15 @@ const uploadFile = multer({
   },
   fileFilter: (req, file, cb) => {
     const whiteListFormat = [
-      'image/png',
-      'image/jpg',
-      'image/jpeg',
-      'image/webp',
+      "image/png",
+      "image/jpg",
+      "image/jpeg",
+      "image/webp",
     ];
     if (whiteListFormat.includes(file.mimetype)) {
       return cb(null, true); // Accept file
     }
-    return cb(new Error('format file is not allowed !'));
+    return cb(new Error("format file is not allowed !"));
   },
 });
 

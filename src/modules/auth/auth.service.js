@@ -1,9 +1,9 @@
-import createError from 'http-errors';
-import UserModel from '../user/user.model.js';
-import { randomInt } from 'crypto';
-import AuthMessage from './auth.message.js';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import createError from "http-errors";
+import UserModel from "../user/user.model.js";
+import { randomInt } from "crypto";
+import AuthMessage from "./auth.message.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 dotenv.config();
 
 const AuthService = {

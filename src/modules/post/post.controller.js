@@ -1,9 +1,15 @@
-import PostMessage from './post.message.js';
-import PostService from './post.service.js';
-import { PostValidation, PostEditValidation } from '../../common/validations/post.validation.js';
-import { CommentValidation, CommentAnsValidation } from '../../common/validations/comment.validation.js';
-import removePropertyEmpty from '../../common/utils/removePropertyEmpty.js';
-import slugifyHandler from '../../common/utils/slugifyHandler.js';
+import PostMessage from "./post.message.js";
+import PostService from "./post.service.js";
+import {
+  PostValidation,
+  PostEditValidation,
+} from "../../common/validations/post.validation.js";
+import {
+  CommentValidation,
+  CommentAnsValidation,
+} from "../../common/validations/comment.validation.js";
+import removePropertyEmpty from "../../common/utils/removePropertyEmpty.js";
+import slugifyHandler from "../../common/utils/slugifyHandler.js";
 
 const PostController = {
   create: async (req, res, next) => {
@@ -33,7 +39,12 @@ const PostController = {
       const { id } = req.params;
       const image = req?.file;
       const sluged = await slugifyHandler(slugs);
-      const data = await removePropertyEmpty({ title, description, slugs: sluged, image });
+      const data = await removePropertyEmpty({
+        title,
+        description,
+        slugs: sluged,
+        image,
+      });
       await PostEditValidation.validateAsync(data);
       await PostService.edit({
         id,

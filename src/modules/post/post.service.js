@@ -1,15 +1,21 @@
-import { isValidObjectId, Types } from 'mongoose';
-import PostMessage from './post.message.js';
-import PostModel from './post.model.js';
-import UserModel from '../user/user.model.js';
-import createError from 'http-errors';
-import createImage from '../../common/utils/createImage.js';
+import { isValidObjectId, Types } from "mongoose";
+import PostMessage from "./post.message.js";
+import PostModel from "./post.model.js";
+import UserModel from "../user/user.model.js";
+import createError from "http-errors";
+import createImage from "../../common/utils/createImage.js";
 
 const PostService = {
   create: async (postDto) => {
     const { title, description, slugs, author, file } = postDto;
     const fileName = await createImage(file, "post");
-    const post = await PostModel.create({ title, description, slugs, author, image: `uploads/${fileName}` });
+    const post = await PostModel.create({
+      title,
+      description,
+      slugs,
+      author,
+      image: `uploads/${fileName}`,
+    });
     await UserModel.updateOne({ _id: author }, { $push: { posts: post._id } });
   },
   edit: async (postDto) => {
@@ -21,10 +27,13 @@ const PostService = {
       const fileName = await createImage(postDto.image, "post");
       data.image = `uploads/${fileName}`;
     }
-    await PostModel.updateOne({ _id: postDto.id }, {
-      $set: { ...data },
-      $push: { slugs: { $each: postDto.slugs } }
-    });
+    await PostModel.updateOne(
+      { _id: postDto.id },
+      {
+        $set: { ...data },
+        $push: { slugs: { $each: postDto.slugs } },
+      },
+    );
   },
   addComment: async (commentDto) => {
     if (!isValidObjectId(commentDto.id))
@@ -42,7 +51,7 @@ const PostService = {
   answerComment: async (commentDto) => {
     if (!isValidObjectId(commentDto.id))
       throw new createError(404, PostMessage.PostNotFound);
-    const post = await PostModel.findOne({ 'comments._id': commentDto.id });
+    const post = await PostModel.findOne({ "comments._id": commentDto.id });
     if (!post) throw new createError(404, PostMessage.PostNotFound);
     const comment = post.comments.id(commentDto.id);
     if (!comment) throw new createError(404, PostMessage.CommentNotFound);
@@ -55,7 +64,8 @@ const PostService = {
     return await post.save();
   },
   removeOne: async (id) => {
-    if (!isValidObjectId(id)) throw new createError(404, PostMessage.PostNotFound);
+    if (!isValidObjectId(id))
+      throw new createError(404, PostMessage.PostNotFound);
     await PostModel.deleteOne({ _id: id });
   },
   getOne: async (id) => {
@@ -67,60 +77,60 @@ const PostService = {
       },
       {
         $lookup: {
-          from: 'users',
-          foreignField: '_id',
-          localField: 'author',
-          as: 'author',
+          from: "users",
+          foreignField: "_id",
+          localField: "author",
+          as: "author",
         },
       },
       {
         $lookup: {
-          from: 'users',
-          foreignField: '_id',
-          localField: 'author',
-          as: 'commentAuthor',
+          from: "users",
+          foreignField: "_id",
+          localField: "author",
+          as: "commentAuthor",
         },
       },
       {
         $unwind: {
-          path: '$comments',
+          path: "$comments",
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $unwind: {
-          path: '$author',
+          path: "$author",
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $unwind: {
-          path: '$commentAuthor',
+          path: "$commentAuthor",
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $group: {
-          _id: '$_id',
-          title: { $first: '$title' },
-          description: { $first: '$description' },
-          slugs: { $first: '$slugs' },
-          createdAt: { $first: '$createdAt' },
+          _id: "$_id",
+          title: { $first: "$title" },
+          description: { $first: "$description" },
+          slugs: { $first: "$slugs" },
+          createdAt: { $first: "$createdAt" },
           author: {
             $first: {
-              fullName: '$author.fullName',
-              profile: '$author.profile',
+              fullName: "$author.fullName",
+              profile: "$author.profile",
             },
           },
-          rate: { $avg: '$comments.rate' },
+          rate: { $avg: "$comments.rate" },
           commnets: {
             $push: {
-              description: '$comments.description',
-              rate: '$comments.rate',
-              createdAt: '$comments.createdAt',
+              description: "$comments.description",
+              rate: "$comments.rate",
+              createdAt: "$comments.createdAt",
               author: {
-                fullName: '$commentAuthor.fullName',
-                profile: '$commentAuthor.profile',
+                fullName: "$commentAuthor.fullName",
+                profile: "$commentAuthor.profile",
               },
             },
           },
@@ -130,15 +140,20 @@ const PostService = {
     return post;
   },
   getAll: async (postDto) => {
-    const { page = 1, limit = 5, sort = "createdAt", search = "", from = "", to = "", slug = "" } = postDto;
+    const {
+      page = 1,
+      limit = 5,
+      sort = "createdAt",
+      search = "",
+      from = "",
+      to = "",
+      slug = "",
+    } = postDto;
     const sortField = sort[0] === "-" ? sort.slice(1) : sort;
     const sortOrder = sort[0] === "-" ? -1 : 1;
     const skip = (page - 1) * limit;
     let match = {
-      $or: [
-        { title: { $regex: search } },
-        { desc: { $regex: search } },
-      ],
+      $or: [{ title: { $regex: search } }, { desc: { $regex: search } }],
     };
     if (slug) {
       match.slugs = { $in: [slug] };
@@ -155,41 +170,45 @@ const PostService = {
       { $sort: { [sortField]: sortOrder } },
       {
         $lookup: {
-          from: 'users',
-          foreignField: '_id',
-          localField: 'author',
-          as: 'author',
+          from: "users",
+          foreignField: "_id",
+          localField: "author",
+          as: "author",
         },
       },
       {
         $unwind: {
-          path: '$author',
+          path: "$author",
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $unwind: {
-          path: '$comments',
+          path: "$comments",
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $group: {
-          _id: '$_id',
-          title: { $first: '$title' },
-          description: { $first: '$description' },
-          slugs: { $first: '$slugs' },
+          _id: "$_id",
+          title: { $first: "$title" },
+          description: { $first: "$description" },
+          slugs: { $first: "$slugs" },
           author: {
             $first: {
-              fullName: '$author.fullName',
-              profile: '$author.profile',
+              fullName: "$author.fullName",
+              profile: "$author.profile",
             },
           },
-          rate: { $avg: '$comments.rate' },
+          rate: { $avg: "$comments.rate" },
         },
       },
     ]);
-    return { posts, result: posts.length, postsCount: await PostModel.countDocuments(match) };
+    return {
+      posts,
+      result: posts.length,
+      postsCount: await PostModel.countDocuments(match),
+    };
   },
 };
 

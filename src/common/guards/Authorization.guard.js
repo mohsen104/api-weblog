@@ -1,8 +1,8 @@
-import createError from 'http-errors';
-import AuthMessage from '../../modules/auth/auth.message.js';
-import jsonwebtoken from 'jsonwebtoken';
-import dotenv from 'dotenv';
-import UserModel from '../../modules/user/user.model.js';
+import createError from "http-errors";
+import AuthMessage from "../../modules/auth/auth.message.js";
+import jsonwebtoken from "jsonwebtoken";
+import dotenv from "dotenv";
+import UserModel from "../../modules/user/user.model.js";
 dotenv.config();
 
 const Authorization = async (req, res, next) => {
@@ -13,7 +13,7 @@ const Authorization = async (req, res, next) => {
     if (data?.id) {
       const user = await UserModel.findById(data.id);
       if (!user) throw new createError(404, AuthMessage.UserNotFound);
-      if (!user.verify) throw new createError(401, AuthMessage.UserNotVerify)
+      if (!user.verify) throw new createError(401, AuthMessage.UserNotVerify);
       req.user = user;
       return next();
     }

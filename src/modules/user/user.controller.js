@@ -1,6 +1,6 @@
-import UserMessage from './user.message.js';
-import UserService from './user.service.js';
-import UserValidation from '../../common/validations/user.validation.js';
+import UserMessage from "./user.message.js";
+import UserService from "./user.service.js";
+import UserValidation from "../../common/validations/user.validation.js";
 
 const UserController = {
   getOne: async (req, res, next) => {
