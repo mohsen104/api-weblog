@@ -40,7 +40,7 @@ The API is documented using Swagger and can be accessed at `/api-docs` when the 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/mohsen104/API-Weblog-Service
+    git clone https://github.com/mohsen104/API-Weblog-Service.git
     cd API-Weblog-Service
     ```
 
