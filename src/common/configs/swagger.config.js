@@ -9,7 +9,15 @@ const SwaggerConfig = (app) => {
         title: "api-weblog",
         description: "",
         version: "1.0.0",
+        contact: {
+          name: "Mohsen Karimvand",
+          url: "",
+          email: "m.karimvand.84@gmail.com"
+        },
       },
+      servers:[
+        
+      ]
     },
     apis: [process.cwd() + "/src/modules/**/*.swagger.js"],
   });
