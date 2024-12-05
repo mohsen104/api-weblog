@@ -15,6 +15,12 @@ const SwaggerConfig = (app) => {
           email: "m.karimvand.84@gmail.com"
         },
       },
+      servers: [
+        {
+            url: "http://localhost:3000/api",
+            description: "development",
+        },
+    ],
     },
     apis: [process.cwd() + "/src/modules/**/*.swagger.js"],
   });

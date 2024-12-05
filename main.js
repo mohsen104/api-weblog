@@ -21,7 +21,7 @@ async function main() {
   app.use(cookieParser(cookieSecretKey));
   app.use("/public", express.static("public"));
 
-  app.use(AllRoutes);
+  app.use("/api",AllRoutes);
 
   SwaggerConfig(app);
 
