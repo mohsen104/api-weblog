@@ -15,16 +15,13 @@ const SwaggerConfig = (app) => {
           email: "m.karimvand.84@gmail.com"
         },
       },
-      servers:[
-        
-      ]
     },
     apis: [process.cwd() + "/src/modules/**/*.swagger.js"],
   });
 
   const swagger = swaggerUi.setup(SwaggerDocument);
 
-  app.use("/", swaggerUi.serve, swagger);
+  app.use("/api-docs", swaggerUi.serve, swagger);
 };
 
 export default SwaggerConfig;
