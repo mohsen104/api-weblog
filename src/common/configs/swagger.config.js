@@ -3,7 +3,7 @@ import swaggerUi from "swagger-ui-express";
 
 const SwaggerConfig = (app) => {
   const SwaggerDocument = swaggerJsdoc({
-    swaggerDefinition: {
+    definition: {
       openapi: "3.0.1",
       info: {
         title: "api-weblog",
